@@ -1,0 +1,3 @@
+C:/Users/gerry/CLionProjects/String_Literal/cmake-build-debug/CMakeFiles/String_Literal.dir
+C:/Users/gerry/CLionProjects/String_Literal/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/gerry/CLionProjects/String_Literal/cmake-build-debug/CMakeFiles/rebuild_cache.dir
