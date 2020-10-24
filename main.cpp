@@ -13,7 +13,7 @@ bool Check_error(string);
 int main()
 {
     bool a;
-    string test = "12a3";
+    string test = ".12.3";
     cout << a << endl;
     cout << "Hello, World!" << endl;
     for (int i = 0; i < test.length();i++){
@@ -59,6 +59,7 @@ bool Check_error(string number)
 {
     bool literal;
     const int max = 50;
+    int decimal_count = 0;
     int length = number.length();
 
     if (length > max)
@@ -71,28 +72,40 @@ bool Check_error(string number)
 
     for (int i = 0; i < length; i++)
     {
-//check beginning inputs for errors, such as starting with an exponent or a symbol other than + or -//
+//check beginning inputs for errors, such as starting with an exponent or a symbol other than + or - or .//
         if (i == 0)
         {
-            if (!isdigit(number[0]) && number[0] != '+' && !isdigit(number[0]) && number[0] != '-')
+            if (!isdigit(number[0]) && number[0] != '+' && !isdigit(number[0]) && number[0] != '-' && !isdigit(number[0]) && number[0] != '.')
             {
                 cout << "false 1";
                 return !literal;
             }
+            else if (number[0] == '.')
+            {
+                decimal_count += 1;
+            }
         }
-//check if program can detect an input that is not a number or an exponent
-        else if (!isdigit(number[i]) && number[i] != 'e' && number[i] != 'E')
+//check if program can detect an input that is not a number, an exponent, or a decimal
+        else if (!isdigit(number[i]) && number[i] != 'e' && number[i] != 'E' && number[i] != '.')
         {
             cout<< "false 2";
             return !literal;
         }
-
-        else if ( i == 1)
+//checks for decimals in the program
+        else if (number[i] == '.')
         {
+            if (decimal_count > 0)
+            {
+                cout << "false 3";
+                return !literal;
+            }
+            else
+            {
 
+            }
         }
     }
 
-    cout <<" valid" <<endl;
+    cout <<" valid" << endl;
     return literal;
 }
