@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 void Is_literal(string);
@@ -8,32 +9,67 @@ bool Check_error(string);
 
 int main()
 {
-    string test = "3";
-    cout << "Hello, World!" << endl;
-    for (int i = 0; i < test.length();i++){
-        cout << isdigit(test[i]) << endl;
-    }
+    int input = 0;
+    string file;
+    string test = "t";
 
-    cout<< Check_error(test);
+    Is_literal(test);
+//Get file from user input//
+    cout << "Enter a .txt file -> ";
+    getline(cin,file);
+    cout << endl;
+    input = file.length();
+//Check that the user inputted a .txt file//
+    while (file[input-1] != 't' && file[input -2] != 'x' && file[input-3] != 't'&& file[input - 4] != '.')
+    {
+        input = 0;
+        file = "";
+
+        cout << "Input Error: please enter a .txt file -> ";
+        getline(cin,file);
+        cout << endl;
+        input = file.length();
+    }
+//Define file reader and writer//
+    ofstream file_writer(file);
+    ifstream file_reader(file);
+
+    string literals;
+    if (file_reader.is_open())
+    {
+        cout<< "open";
+        while (!file_reader.eof())
+        {
+            cout<<"yer";
+            cin.clear();
+            getline(file_reader,literals);
+            cout << literals <<endl;
+            Is_literal(literals);
+        }
+    }
+    file_reader.close();
+
+
     return 0;
 }
 
 void Is_literal(string number)
 {
+
     if (!Check_error(number))
     {
-        cout << number << " is NOT a valid numeric literal" << endl;
+        cout << number << " is a valid numeric literal" << endl;
     }
 
     else
     {
-        cout << number << " is a valid numeric literal" << endl;
+        cout << number << " is Not a valid numeric literal" << endl;
     }
 }
 
 bool Check_error(string number)
 {
-    bool literal;
+    bool literal = 0;
     const int max = 50;
     int decimal_count = 0;
     int length = number.length();
@@ -54,11 +90,10 @@ bool Check_error(string number)
 
     for (int i = 0; i < length; i++)
     {
-        cout << i << length<< endl;
 //check if program can detect an input that is not a number, an exponent, a decimal, or unary symbol +/- //
         if (!isdigit(number[i]) && number[i] != 'e' && number[i] != 'E' && number[i] != '.' && number[i] != '+' && number[i] != '-')
         {
-            cout << "false 2";
+            cout << "false 2" <<endl;
             return !literal;
         }
 //checks for decimals in the program//
@@ -104,6 +139,6 @@ bool Check_error(string number)
 
     }
 
-    cout <<" valid" << endl;
+
     return literal;
 }
