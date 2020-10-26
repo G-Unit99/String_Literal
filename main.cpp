@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <istream>
-#include <ostream>
 
 using namespace std;
 void Is_literal(string);
@@ -15,7 +13,6 @@ int main()
     string file;
     string test = "t";
 
-    Is_literal(test);
 //Get file from user input//
     cout << "Enter a .txt file -> ";
     getline(cin,file);
@@ -33,27 +30,24 @@ int main()
         input = file.length();
     }
 //Define file reader and writer//
-    ofstream file_writer(file);
-    ifstream file_reader(file);
 
-    string literals;
-    if (file_reader.is_open())
+    ifstream file_(file);
+    if (file_.is_open())
     {
-        cout<< "open";
-        while (file_reader >> literals)
+       cout<< "open";
+       string line = "";
+       while (getline(file_, line))
         {
-            cout<< "yer" <<endl;
-            cout << literals <<endl;
+            cout << "yer" << endl;
+            cout << line << endl;
 
         }
-        file_reader.close();
+        file_.close();
     }
     else
     {
         cout << "file is not open" << endl;
     }
-
-
 
 
 }
