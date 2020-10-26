@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <fstream>
 #include <bits/stdc++.h>
 using namespace std;
 void Is_literal(string, int);
@@ -10,6 +9,7 @@ bool Check_error(string);
 int main()
 {
     int input = 0;
+    int largest_length = 0;
     string file;
     string test = "t";
 
@@ -29,8 +29,7 @@ int main()
         cout << endl;
         input = file.length();
     }
-//Define file reader and writer//
-
+//Read file//
     ifstream file_(file);
     if (file_.is_open())
     {
@@ -44,9 +43,10 @@ int main()
             if (line.length() > greatest_length)
             {
                 greatest_length = line.length();
+                largest_length = greatest_length;
             }
         }
-
+//reset line reader//
        file_.clear();
        file_.seekg(0,file_.beg);
        while (getline(file_, line))
@@ -60,7 +60,24 @@ int main()
     {
         cout << "file is not open" << endl;
     }
+//Write on file//
+    ofstream file_write(file);
+    if (file_write.is_open())
+    {
+        cout<< "open" << endl;
+        string line = "";
 
+        while (getline(file_, line))
+        {
+            Is_literal(line,largest_length);
+        }
+        cout << "closed" << endl;
+        file_write.close();
+    }
+    else
+    {
+        cout << "file is not open" << endl;
+    }
 }
 
 void Is_literal(string number, int length)
