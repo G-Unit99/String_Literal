@@ -34,13 +34,11 @@ int main()
     ifstream file_(file);
     if (file_.is_open())
     {
-       cout<< "open";
+       cout<< "open" << endl;
        string line = "";
        while (getline(file_, line))
         {
-            cout << "yer" << endl;
-            cout << line << endl;
-
+            Is_literal(line);
         }
         file_.close();
     }
