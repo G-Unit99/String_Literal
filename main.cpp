@@ -32,18 +32,17 @@ int main()
     }
 //Define file reader and writer//
     ofstream file_writer(file);
-    ifstream file_reader(file);
+    ifstream file_reader("test.txt");
 
     string literals;
     if (file_reader.is_open())
     {
         cout<< "open";
-        while (!file_reader.eof())
+        while (file_reader >> literals)
         {
             cout<< "yer" <<endl;
-            file_reader >> literals;
             cout << literals <<endl;
-            Is_literal(literals);
+
         }
         file_reader.close();
     }
