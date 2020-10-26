@@ -2,15 +2,15 @@
 #include <string>
 #include <bits/stdc++.h>
 using namespace std;
-void Is_literal(string, int);
+string Is_literal(string, int);
 bool Check_error(string);
 
 
 int main()
 {
     int input = 0;
-    int largest_length = 0;
-    string file;
+    int file_end =0;
+    string file ="";
     string test = "t";
 
 //Get file from user input//
@@ -33,7 +33,7 @@ int main()
     ifstream file_(file);
     if (file_.is_open())
     {
-       cout<< "open" << endl;
+       cout << "open" << endl;
        int greatest_length = 0;
        int file_length = 0;
        string line = "";
@@ -43,15 +43,15 @@ int main()
             if (line.length() > greatest_length)
             {
                 greatest_length = line.length();
-                largest_length = greatest_length;
             }
+            file_end = file_length;
         }
 //reset line reader//
        file_.clear();
        file_.seekg(0,file_.beg);
        while (getline(file_, line))
         {
-            Is_literal(line,greatest_length);
+            cout << left << setw(greatest_length) << line << Is_literal(line,greatest_length) << "\n";
         }
        cout << "closed" << endl;
        file_.close();
@@ -60,38 +60,43 @@ int main()
     {
         cout << "file is not open" << endl;
     }
-//Write on file//
-    ofstream file_write(file);
-    if (file_write.is_open())
-    {
-        cout<< "open" << endl;
-        string line = "";
 
-        while (getline(file_, line))
-        {
-            Is_literal(line,largest_length);
-        }
-        cout << "closed" << endl;
-        file_write.close();
-    }
-    else
+    fstream write(file);
+    if (write.is_open())
     {
-        cout << "file is not open" << endl;
+        cout << "open" << endl;
+        int greatest_length = 0;
+        string line;
+
+        streambuf *oldbuf = cout.rdbuf();
+        cout.rdbuf(file_.rdbuf());
+        while (file_end!=0)
+        {
+            string holder = line;
+            write << setw(greatest_length) << holder << Is_literal(holder,greatest_length) << "\n";
+            file_end--;
+        }
+        cout.rdbuf(oldbuf);
+        cout << "closed" << endl;
+        file_.close();
     }
+
 }
 
-void Is_literal(string number, int length)
+string Is_literal(string number, int length)
 {
     int greatest_length = length;
+    string result = "";
     if (!Check_error(number))
     {
-        cout << left << setw(greatest_length) << number << " is a valid numeric literal" << endl;
+        result = " is a valid numeric literal";
     }
 
     else
     {
-        cout << left << setw(greatest_length) << number << " is Not a valid numeric literal" << endl;
+        result = " is Not a valid numeric literal";
     }
+    return result;
 }
 
 bool Check_error(string number)
@@ -105,13 +110,11 @@ bool Check_error(string number)
 //Checks if string length is over 50 characters long//
     if (length > max)
     {
-        cout << "false";
         return !literal;
     }
 //checks if program ends with an exponent symbol, starts with an exponent symbol, or ends with a unary symbol +/- //
     if (number[length - 1] == 'e' || number[length -1] == 'E'|| number[length -1] == '+' || number[length- 1] == '-' || number[0] == 'e' || number[0] == 'E')
     {
-        cout << "false 1";
         return !literal;
     }
 
@@ -120,7 +123,6 @@ bool Check_error(string number)
 //check if program can detect an input that is not a number, an exponent, a decimal, or unary symbol +/- //
         if (!isdigit(number[i]) && number[i] != 'e' && number[i] != 'E' && number[i] != '.' && number[i] != '+' && number[i] != '-')
         {
-            cout << "false 2" <<endl;
             return !literal;
         }
 //checks for decimals in the program//
@@ -128,7 +130,6 @@ bool Check_error(string number)
         {
             if (decimal_count > 0)
             {
-                cout << "false 3";
                 return !literal;
             }
             else
@@ -142,14 +143,12 @@ bool Check_error(string number)
 //Check that an exponent symbol is not followed by another exponent symbol//
             if (number[i + 1] == 'e' || number[i + 1] == 'E')
             {
-                cout<< "false 4";
                 return !literal;
             }
             else if (number[i + 1] == '+' || number[i + 1] == '-')
             {
                 if (!isdigit(number[i +2]))
                 {
-                    cout << "false 5";
                     return !literal;
                 }
             }
@@ -159,7 +158,6 @@ bool Check_error(string number)
         {
             if (number[i +1] == '+' || number[i +1] == '-')
             {
-                cout << "false 6";
                 return !literal;
             }
         }
