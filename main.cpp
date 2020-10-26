@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <istream>
+#include <ostream>
 
 using namespace std;
 void Is_literal(string);
@@ -32,7 +34,7 @@ int main()
     }
 //Define file reader and writer//
     ofstream file_writer(file);
-    ifstream file_reader("test.txt");
+    ifstream file_reader(file);
 
     string literals;
     if (file_reader.is_open())
