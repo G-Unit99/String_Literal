@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-
+#include <bits/stdc++.h>
 using namespace std;
-void Is_literal(string);
+void Is_literal(string, int);
 bool Check_error(string);
 
 
@@ -35,32 +35,45 @@ int main()
     if (file_.is_open())
     {
        cout<< "open" << endl;
+       int greatest_length = 0;
+       int file_length = 0;
        string line = "";
+        while (getline(file_, line))
+        {
+            file_length += 1;
+            if (line.length() > greatest_length)
+            {
+                greatest_length = line.length();
+            }
+        }
+
+       file_.clear();
+       file_.seekg(0,file_.beg);
        while (getline(file_, line))
         {
-            Is_literal(line);
+            Is_literal(line,greatest_length);
         }
-        file_.close();
+       cout << "closed" << endl;
+       file_.close();
     }
     else
     {
         cout << "file is not open" << endl;
     }
 
-
 }
 
-void Is_literal(string number)
+void Is_literal(string number, int length)
 {
-
+    int greatest_length = length;
     if (!Check_error(number))
     {
-        cout << number << " is a valid numeric literal" << endl;
+        cout << left << setw(greatest_length) << number << " is a valid numeric literal" << endl;
     }
 
     else
     {
-        cout << number << " is Not a valid numeric literal" << endl;
+        cout << left << setw(greatest_length) << number << " is Not a valid numeric literal" << endl;
     }
 }
 
