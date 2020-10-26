@@ -40,17 +40,21 @@ int main()
         cout<< "open";
         while (!file_reader.eof())
         {
-            cout<<"yer";
-            cin.clear();
-            getline(file_reader,literals);
+            cout<< "yer" <<endl;
+            file_reader >> literals;
             cout << literals <<endl;
             Is_literal(literals);
         }
+        file_reader.close();
     }
-    file_reader.close();
+    else
+    {
+        cout << "file is not open" << endl;
+    }
 
 
-    return 0;
+
+
 }
 
 void Is_literal(string number)
