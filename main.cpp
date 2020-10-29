@@ -2,16 +2,15 @@
 #include <string>
 #include <bits/stdc++.h>
 using namespace std;
-string Is_literal(string, int);
+string Is_literal(string);
 bool Check_error(string);
 
 
 int main()
 {
     int input = 0;
-    int file_end =0;
+    int file_end = 0;
     string file ="";
-    string test = "t";
 
 //Get file from user input//
     cout << "Enter a .txt file -> ";
@@ -19,7 +18,7 @@ int main()
     cout << endl;
     input = file.length();
 //Check that the user inputted a .txt file//
-    while (file[input-1] != 't' && file[input -2] != 'x' && file[input-3] != 't'&& file[input - 4] != '.')
+    while (file[input - 1] != 't' && file[input - 2] != 'x' && file[input - 3] != 't'&& file[input - 4] != '.')
     {
         input = 0;
         file = "";
@@ -30,14 +29,13 @@ int main()
         input = file.length();
     }
 //Read file//
-    ifstream file_(file);
+    fstream file_(file);
     if (file_.is_open())
     {
-       cout << "open" << endl;
        int greatest_length = 0;
        int file_length = 0;
        string line = "";
-        while (getline(file_, line))
+       while (getline(file_, line))
         {
             file_length += 1;
             if (line.length() > greatest_length)
@@ -47,45 +45,37 @@ int main()
             file_end = file_length;
         }
 //reset line reader//
+       string literals[file_end];
+       string new_literals[file_end];
+       int array_iterator = 0;
        file_.clear();
        file_.seekg(0,file_.beg);
        while (getline(file_, line))
         {
-            cout << left << setw(greatest_length) << line << Is_literal(line,greatest_length) << "\n";
+            literals[array_iterator] = line;
+            new_literals[array_iterator] = Is_literal(line);
+            cout << left << setw(greatest_length) << line << Is_literal(line) << "\n";
+            array_iterator +=1 ;
         }
-       cout << "closed" << endl;
-       file_.close();
+       array_iterator = 0;
+       file_.clear();
+       file_.seekg(0,file_.beg);
+       while (file_end!= 0)
+        {
+            file_ << left << setw(greatest_length) << literals[array_iterator] << new_literals[array_iterator] << "\n";
+            file_end--;
+            array_iterator += 1;
+        }
+        file_.close();
     }
     else
     {
         cout << "file is not open" << endl;
     }
-
-    fstream write(file);
-    if (write.is_open())
-    {
-        cout << "open" << endl;
-        int greatest_length = 0;
-        string line;
-
-        streambuf *oldbuf = cout.rdbuf();
-        cout.rdbuf(file_.rdbuf());
-        while (file_end!=0)
-        {
-            string holder = line;
-            write << setw(greatest_length) << holder << Is_literal(holder,greatest_length) << "\n";
-            file_end--;
-        }
-        cout.rdbuf(oldbuf);
-        cout << "closed" << endl;
-        file_.close();
-    }
-
 }
 
-string Is_literal(string number, int length)
+string Is_literal(string number)
 {
-    int greatest_length = length;
     string result = "";
     if (!Check_error(number))
     {
@@ -113,7 +103,7 @@ bool Check_error(string number)
         return !literal;
     }
 //checks if program ends with an exponent symbol, starts with an exponent symbol, or ends with a unary symbol +/- //
-    if (number[length - 1] == 'e' || number[length -1] == 'E'|| number[length -1] == '+' || number[length- 1] == '-' || number[0] == 'e' || number[0] == 'E')
+    if (number[length - 1] == 'e' || number[length - 1] == 'E'|| number[length - 1] == '+' || number[length- 1] == '-' || number[0] == 'e' || number[0] == 'E')
     {
         return !literal;
     }
@@ -161,9 +151,6 @@ bool Check_error(string number)
                 return !literal;
             }
         }
-
     }
-
-
     return literal;
 }
